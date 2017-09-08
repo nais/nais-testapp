@@ -1,9 +1,9 @@
-FROM docker.adeo.no:5000/alpine-node:base-6.9
-MAINTAINER Johnny Horvi <johnny.horvi@gmail.com> 
+FROM mhart/alpine-node:base-8
+MAINTAINER Johnny Horvi <johnny.horvi@nav.no> 
 
 WORKDIR /src
 COPY . .
 
-EXPOSE 80
+EXPOSE 8080
 
 CMD ["node", "./src/server.js"]
