@@ -12,7 +12,7 @@ script:
 - npm version major --no-git-tag-version
 - git add package.json
 - git commit -m "auto-update by travis [skip ci]"
-- git push https://$GH_TOKEN@github.com/nais/nais-testapp
+- git push https://$GH_TOKEN@github.com/nais/nais-testapp HEAD:master
 branches:
   only:
   - master
