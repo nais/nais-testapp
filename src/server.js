@@ -6,6 +6,14 @@ app.get("/selftest", (req, res) => {
     res.send("up")
 })
 
+app.get("/isready", (req, res) => {
+    res.sendStatus(200)
+})
+
+app.get("/isalive", (req, res) => {
+    res.sendStatus(200)
+})
+
 app.get("/env", (req, res) => {
     res.setHeader("Content-Type", "application/json")
     res.send(JSON.stringify(process.env))
