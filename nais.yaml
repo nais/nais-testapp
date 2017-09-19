@@ -3,7 +3,7 @@ image: navikt/nais-testapp
 port: 8080
 fasitResources:
   used:
-  - alias: k8s_testappCredential
+  - alias: testCredential
     resourceType: credential
-  - alias: k8s.testResource
-    resourceType: credential
+  - alias: a.testBaseurl
+    resourceType: baseurl

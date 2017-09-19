@@ -1,6 +1,9 @@
 const express = require('express');
 const ip = require('ip')
-const app = new express();
+const prometheus = require('prom-client')
+
+prometheus.collectDefaultMetrics();
+const app = new express()
 
 app.get("/selftest", (req, res) => {
     res.send("up")
@@ -13,6 +16,11 @@ app.get("/isready", (req, res) => {
 app.get("/isalive", (req, res) => {
     res.sendStatus(200)
 })
+
+app.get('/metrics', (req, res) => {
+	res.set('Content-Type', prometheus.register.contentType);
+	res.end(prometheus.register.metrics());
+});
 
 app.get("/env", (req, res) => {
     res.setHeader("Content-Type", "application/json")
