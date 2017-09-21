@@ -1,6 +1,9 @@
 name: nais-testapp
 image: navikt/nais-testapp 
 port: 8080
+prometheus:
+  enabled: true
+  path: /metrics
 fasitResources:
   used:
   - alias: testCredential
