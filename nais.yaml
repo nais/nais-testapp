@@ -12,6 +12,6 @@ fasitResources:
     resourceType: baseurl
   - alias: testCertificate
     resourceType: certificate
-  - alias: testCertificate2
+  - alias: testCertifcate2
     resourceType: certificate
 
