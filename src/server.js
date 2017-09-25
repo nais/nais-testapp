@@ -48,5 +48,4 @@ const dummyCheck = (done) => {
 
 const envCheck = require("./lib/checks/environment.js");
 const certCheck = require("./lib/checks/certfificate.js");
-const dnsCheck = require("./lib/checks/dns.js");
-app.use('/healthcheck', physical([dummyCheck, envCheck.hasFasitEnvVariables, certCheck.checkCertificate, dnsCheck.checkDns]));
+app.use('/healthcheck', physical([dummyCheck, envCheck.hasFasitEnvVariables, certCheck.checkCertificate]));
