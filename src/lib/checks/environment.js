@@ -1,10 +1,9 @@
 const physical = require('express-physical');
-const requiredEnvVars = ["testCredential_username", "testCredential_password", "a_testBaseurl_url"];
+const requiredEnvVars = ["TESTCREDENTIAL_USERNAME", "TESTCREDENTIAL_PASSWORD", "A_TESTBASEURL_URL"];
 
 const checkEnvVariables = (data) => (done) => {
     if (requiredEnvVars.every((e) => {
-            //todo Remove once all env vars are uppercased.
-            return process.env[e] && process.env[e.toUpperCase()]
+            return process.env[e]
         })) {
         done(physical.response(Object.assign(data, {
             healthy: true,
@@ -15,7 +14,7 @@ const checkEnvVariables = (data) => (done) => {
             healthy: false,
             actionable: false,
             severity: physical.severity.CRITICAL,
-            message: "Required fasit resources not found: " + requiredEnvVars + ", " + requiredEnvVars.map(s => s.toUpperCase()),
+            message: "One or more of these required fasit resources not found: " + requiredEnvVars,
             info: {
                 info: "todo: Can write something useful here."
             }
