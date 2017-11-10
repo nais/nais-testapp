@@ -33,7 +33,7 @@ app.get("/whoami", (req, res) => {
     res.send(`version ${version} @ ${ip.address()}`)
 });
 
-app.get("headers", (req, res) => {
+app.get("/headers", (req, res) => {
     res.send(JSON.stringify(req.headers))
 });
 
