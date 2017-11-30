@@ -4,6 +4,7 @@ port: 8080
 prometheus:
   enabled: true
   path: /metrics
+preStopHookPath: "/die"
 fasitResources:
   used:
   - alias: testCredential
