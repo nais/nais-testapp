@@ -1,6 +1,6 @@
 {
   "name": "nais-testapp",
-  "version": "17.0.0",
+  "version": "18.0.0",
   "description": "nais test application",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
