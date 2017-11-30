@@ -5,6 +5,7 @@ const physical = require('express-physical');
 
 prometheus.collectDefaultMetrics();
 const app = new express();
+let server;
 
 app.get("/selftest", (req, res) => {
     res.send("up")
@@ -37,9 +38,16 @@ app.get("/headers", (req, res) => {
     res.send(JSON.stringify(req.headers))
 });
 
-app.listen(8080, () => {
+app.get("/die", () => {
+    server.close( () => {
+        console.log('I am dying')
+    })
+});
+
+server = app.listen(8080, () => {
     console.log('running on port 8080')
 });
+
 
 const dummyCheck = (done) => {
     done(physical.response({
