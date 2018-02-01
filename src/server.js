@@ -8,15 +8,15 @@ const app = new express();
 let server;
 
 app.get("/selftest", (req, res) => {
-    res.send("up")
+    res.send("up");
 });
 
 app.get("/isready", (req, res) => {
-    res.sendStatus(200)
+    res.sendStatus(200);
 });
 
 app.get("/isalive", (req, res) => {
-    res.sendStatus(200)
+    res.sendStatus(200);
 });
 
 app.get('/metrics', (req, res) => {
@@ -26,16 +26,18 @@ app.get('/metrics', (req, res) => {
 
 app.get("/env", (req, res) => {
     res.setHeader("Content-Type", "application/json");
-    res.send(JSON.stringify(process.env))
+    res.send(JSON.stringify(process.env));
 });
 
 app.get("/whoami", (req, res) => {
     const version = process.env['app_version'];
-    res.send(`version ${version} @ ${ip.address()}`)
+    res.send(`version ${version} @ ${ip.address()}`);
 });
 
 app.get("/headers", (req, res) => {
-    res.send(JSON.stringify(req.headers))
+    res.send(JSON.stringify(req.headers));
+});
+
 });
 
 app.get("/die", () => {
