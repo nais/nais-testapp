@@ -15,4 +15,4 @@ fasitResources:
     resourceType: certificate
   - alias: testCertificate2
     resourceType: certificate
-
+leaderElection: true
