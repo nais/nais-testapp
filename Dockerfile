@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:base-8
+FROM mhart/alpine-node:base-9
 MAINTAINER Johnny Horvi <johnny.horvi@nav.no> 
 
 WORKDIR /src
