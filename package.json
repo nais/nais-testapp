@@ -1,6 +1,6 @@
 {
   "name": "nais-testapp",
-  "version": "20.0.0",
+  "version": "21.0.0",
   "private": true,
   "description": "nais test application",
   "scripts": {
