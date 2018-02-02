@@ -109,9 +109,32 @@ const dummyCheck = (done) => {
         actionable: false,
         healthy: true,
         type: physical.type.SELF
-    }))
+    }));
+};
+
+const leaderCheck = (done) => {
+    getLeaderName(function (statusCode, result) {
+	if (statusCode == 200) {
+	    done(physical.response({
+		name: 'Leader election check',
+		actionable: false,
+		healthy: true,
+		message: result,
+		type: physical.type.SELF
+	    }));
+	} else {
+	    done(physical.response({
+		name: 'Leader election check',
+		actionable: false,
+		healthy: false,
+		message: result,
+		severity: physical.severity.CRITICAL,
+		type: physical.type.SELF
+	    }));
+	}
+    });
 };
 
 const envCheck = require("./lib/checks/environment.js");
 const certCheck = require("./lib/checks/certfificate.js");
-app.use('/healthcheck', physical([dummyCheck, envCheck.hasFasitEnvVariables, certCheck.checkCertificate]));
+app.use('/healthcheck', physical([dummyCheck, envCheck.hasFasitEnvVariables, certCheck.checkCertificate, leaderCheck]));
