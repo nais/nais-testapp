@@ -136,5 +136,4 @@ const leaderCheck = (done) => {
 };
 
 const envCheck = require("./lib/checks/environment.js");
-const certCheck = require("./lib/checks/certfificate.js");
-app.use('/healthcheck', physical([dummyCheck, envCheck.hasFasitEnvVariables, certCheck.checkCertificate, leaderCheck]));
+app.use('/healthcheck', physical([dummyCheck, envCheck.hasFasitEnvVariables, leaderCheck]));
