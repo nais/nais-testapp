@@ -1,5 +1,5 @@
 const physical = require('express-physical');
-const requiredCertifcates = ["testCertificate_keystore", "testCertificate2_keystore"];
+const requiredCertifcates = ["testcertificate_keystore", "testcertificate2_keystore"];
 const fs = require('fs');
 const mountPath = "/var/run/secrets/naisd.io/";
 
