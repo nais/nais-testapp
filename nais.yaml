@@ -16,3 +16,4 @@ fasitResources:
   - alias: testCertificate2
     resourceType: certificate
 leaderElection: true
+redis: true
