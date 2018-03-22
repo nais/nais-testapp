@@ -10,9 +10,7 @@ script:
 - git commit -m "auto-update by travis [skip ci]"
 - git push https://$GH_TOKEN@github.com/nais/nais-testapp HEAD:master
 - npm install --production
-- export VERSION=$(node -pe "require('./package.json').version")
-- docker build -t navikt/nais-testapp:${VERSION} .
-- docker push navikt/nais-testapp:${VERSION}
+- make build push
 branches:
   only:
   - master
