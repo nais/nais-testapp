@@ -18,7 +18,7 @@ fasitResources:
 leaderElection: true
 redis: true
 alerts:
-  alert: Nais-testapp deployed
+- alert: Nais-testapp deployed
   expr: kube_deployment_status_replicas_unavailable{deployment="nais-testapp"} > 0
   for: 5m
   annotations:
