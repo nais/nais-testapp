@@ -23,4 +23,9 @@ alerts:
   expr: kube_deployment_status_replicas_unavailable{deployment="nais-testapp"} > 0
   for: 5m
   annotations:
-    action: kubectl -n nais describe deploy nais-testapp; kubectl -n nais describe po nais-testapp
+    action: kubectl describe deploy nais-testapp; kubectl describe po nais-testapp
+- alert: Nais-testapp deployed
+  expr: sum(up{app="nais-testapp"}) == 4
+  for: 1m
+  annotations:
+    action: kubectl describe deploy nais-testapp; kubectl describe po nais-testapp
