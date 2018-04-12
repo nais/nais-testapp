@@ -19,13 +19,35 @@ fasitResources:
 leaderElection: true
 redis: true
 alerts:
-- alert: Nais-testapp deployed
-  expr: kube_deployment_status_replicas_unavailable{deployment="nais-testapp"} > 0
+- alert: Up
+  expr: sum(up{app="nais-testapp"}) < 2
   for: 5m
+  labels:
+    severity: critical
   annotations:
+    description: nais-testapp does not have 2 pods that are up
     action: kubectl describe deploy nais-testapp; kubectl describe po nais-testapp
-- alert: Nais-testapp deployed
-  expr: sum(up{app="nais-testapp"}) == 4
-  for: 1m
+- alert: Nais-testapp deployment generation missmatch
+  expr: kube_deployment_status_observed_generation{deployment="nais-testapp"} != kube_deployment_metadata_generation{deployment="nais-testapp"}
+  for: 15m
+  labels:
+    severity: warning
   annotations:
-    action: kubectl describe deploy nais-testapp; kubectl describe po nais-testapp
+    description: The deployment generation observed in the cluster is not the same as specified in the deploy manifest.
+    action: Check the deployment, replicationset, pods for errors.
+- alert: PredictedFDExhaust
+  expr: predict_linear(fd_utilization[1h], 3600 * 4) > 1
+  for: 10m
+  labels:
+    severity: warning
+  annotations:
+    description: Pod {{$labels.kubernetes_namespace}}/{{$labels.kubernetes_pod_name}} will run out of file/socket descriptors in 4 hours
+    action: Investigate why app is keeping files / sockets open
+- alert: FailureResponseHigh
+  expr: (sum(rate(traefik_requests_total{code=~"[45]..", service=~"nais-testapp.*"}[5m])) by (code)) / scalar(sum(rate(traefik_requests_total{service=~"nais-testapp.*"}[5m]))) > 0.10
+  for: 5m
+  labels:
+    severity: warning
+  annotations:
+    description: Nais-testapp is experiencing a lot of failed {{$labels.method}} requests.
+    action: kubectl logs -f nais-testapp-{id} to investigate why app is responding with failures.
