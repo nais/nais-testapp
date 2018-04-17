@@ -5,7 +5,8 @@ const os = require('os');
 const prometheus = require('prom-client');
 const physical = require('express-physical');
 const request = require('request');
-const Redis = require('ioredis');
+const ioredis = require('ioredis');
+const redis = newRedisConnection();
 
 prometheus.collectDefaultMetrics();
 const app = new express();
@@ -137,7 +138,6 @@ function parseRedisInfo(info) {
 }
 
 app.get("/redisInfo", (req, res) => {
-    let redis = newRedisConnection();
     redis.info(function(err, result) {
 	res.statusCode = 200;
 	res.send(parseRedisInfo(result));
@@ -188,7 +188,6 @@ const leaderCheck = (done) => {
 };
 
 const redisCheck = (done) => {
-    let redis = newRedisConnection();
     redis.info("replication", function(err, result) {
 	done(physical.response({
 	    name: 'Redis sentinel check',
