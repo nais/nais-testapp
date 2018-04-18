@@ -18,6 +18,7 @@ fasitResources:
     resourceType: certificate
 leaderElection: true
 redis: true
+logformat: glog
 alerts:
 - alert: up
   expr: sum(up{app="nais-testapp"}) < 2
