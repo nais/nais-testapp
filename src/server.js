@@ -5,7 +5,7 @@ const os = require('os');
 const prometheus = require('prom-client');
 const physical = require('express-physical');
 const request = require('request');
-const ioredis = require('ioredis');
+const Redis = require('ioredis');
 const redis = newRedisConnection();
 
 prometheus.collectDefaultMetrics();
