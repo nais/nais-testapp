@@ -150,6 +150,39 @@ app.get("/die", () => {
     })
 });
 
+app.get("/proxy", (req, res) => {
+    let options = {
+        host: req.query.host,
+        path: Object.is(req.query.path, undefined) ? '/' : req.query.path,
+        port: Object.is(req.query.port, undefined) ? '80' : req.query.port,
+        method: 'GET',
+    };
+
+    console.log("Proxying to: ", options);
+    let proxyReq = http.get(options, (proxyRes) => {
+        proxyRes.on('data', (chunk) => {
+            console.log("data");
+            res.write(chunk);
+        });
+
+        proxyRes.on('close', () => {
+            console.log("close");
+            res.writeHead(proxyRes.statusCode);
+            res.end()
+        });
+
+        proxyRes.on('end', () => {
+            console.log("end");
+            //res.writeHead(proxyRes.statusCode);
+            res.end()
+        });
+    }).on('error', (err) => {
+        console.log('Error: ', err);
+    });
+
+    proxyReq.end();
+});
+
 server = app.listen(8080, () => {
     console.log('running on port 8080')
 });
