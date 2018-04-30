@@ -7,4 +7,4 @@ build:
 push:
 	docker push navikt/nais-testapp:$(VERSION)
 run-local:
-	docker run --rm -ti -p 8080:8080 nais-testapp
+	docker run --rm -ti -p 8080:8080 navikt/nais-testapp:$(VERSION)
