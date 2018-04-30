@@ -161,19 +161,16 @@ app.get("/proxy", (req, res) => {
     console.log("Proxying to: ", options);
     let proxyReq = http.get(options, (proxyRes) => {
         proxyRes.on('data', (chunk) => {
-            console.log("data");
             res.write(chunk);
         });
 
         proxyRes.on('close', () => {
-            console.log("close");
             res.writeHead(proxyRes.statusCode);
             res.end()
         });
 
         proxyRes.on('end', () => {
-            console.log("end");
-            //res.writeHead(proxyRes.statusCode);
+            res.writeHead(proxyRes.statusCode);
             res.end()
         });
     }).on('error', (err) => {
