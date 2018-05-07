@@ -101,6 +101,10 @@ function newRedisConnection() {
     });
 }
 
+function isRedisReady() {
+    return redis.status === "ready";
+}
+
 function parseRedisInfo(info) {
     function innerValues(info) {
 	let data = {};
@@ -138,10 +142,15 @@ function parseRedisInfo(info) {
 }
 
 app.get("/redisInfo", (req, res) => {
-    redis.info(function(err, result) {
+    if (isRedisReady()) {
+	redis.info(function(err, result) {
+	    res.statusCode = 200;
+	    res.send(parseRedisInfo(result));
+	});
+    } else {
 	res.statusCode = 200;
-	res.send(parseRedisInfo(result));
-    });
+	res.send("Ikke kontakt med Redis cluster");
+    }
 });
 
 app.get("/die", () => {
@@ -218,15 +227,26 @@ const leaderCheck = (done) => {
 };
 
 const redisCheck = (done) => {
-    redis.info("replication", function(err, result) {
+    if (isRedisReady()) {
+	redis.info("replication", function(err, result) {
+	    done(physical.response({
+		name: 'Redis sentinel check',
+		actionable: false,
+		healthy: true,
+		message: parseRedisInfo(result),
+		type: physical.type.SELF
+	    }));
+	});
+    } else {
 	done(physical.response({
 	    name: 'Redis sentinel check',
 	    actionable: false,
-	    healthy: true,
-	    message: parseRedisInfo(result),
+	    healthy: false,
+	    message: "Ikke kontakt med Redis cluster",
+            severity: physical.severity.WARNING,
 	    type: physical.type.SELF
 	}));
-    });
+    }
 };
 
 const envCheck = require("./lib/checks/environment.js");
