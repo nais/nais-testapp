@@ -6,18 +6,6 @@ prometheus:
   enabled: true
   path: /metrics
 preStopHookPath: "/die"
-fasitResources:
-  used:
-  - alias: testCredential
-    resourceType: credential
-  - alias: a.testBaseurl
-    resourceType: baseurl
-  - alias: testCertificate
-    resourceType: certificate
-  - alias: testCertificate2
-    resourceType: certificate
-leaderElection: true
-redis: true
 logformat: glog
 alerts:
 - alert: up
