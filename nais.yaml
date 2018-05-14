@@ -53,10 +53,10 @@ alerts:
     description: Nais-testapp is experiencing a lot of failed {{$labels.method}} requests.
     action: kubectl logs -f nais-testapp-{id} to investigate why app is responding with failures.
 - alert: alert-triggered
-  expr: increase(alerts_triggered{app="nais-testapp"}[15s]) > 0
-  for: 10s
+  expr: increase(alerts_triggered{app="nais-testapp"}[2m]) > 0
+  for: 1s
   labels:
-    severity: warning
+    severity: testing
   annotations:
     description: Nais-testapp alert has been triggered manually.
     action: Nothing
