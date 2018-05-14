@@ -160,12 +160,11 @@ app.get("/die", () => {
 });
 
 app.get("/proxy", (req, res) => {
-    let options = {
-        host: req.query.host,
-        path: Object.is(req.query.path, undefined) ? '/' : req.query.path,
-        port: Object.is(req.query.port, undefined) ? '80' : req.query.port,
-        method: 'GET',
-    };
+    let endpoints = [
+      { host: 'http://naisd', path: '/', port: '80', method: 'GET' },
+    ];
+
+    let options = endpoints[parseInt(req.query.endpoint)];
 
     console.log("Proxying to: ", options);
     let proxyReq = http.get(options, (proxyRes) => {
