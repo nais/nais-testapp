@@ -205,29 +205,6 @@ const leaderCheck = (done) => {
     });
 };
 
-const redisCheck = (done) => {
-    if (isRedisReady()) {
-        redis.info("replication", function(err, result) {
-            done(physical.response({
-                name: 'Redis sentinel check',
-                actionable: false,
-                healthy: true,
-                message: parseRedisInfo(result),
-                type: physical.type.SELF
-            }));
-        });
-    } else {
-        done(physical.response({
-            name: 'Redis sentinel check',
-            actionable: false,
-            healthy: false,
-            message: "Ikke kontakt med Redis cluster",
-            severity: physical.severity.WARNING,
-            type: physical.type.SELF
-        }));
-    }
-};
-
 const envCheck = require("./lib/checks/environment.js");
 const certCheck = require("./lib/checks/certfificate.js");
-app.use('/healthcheck', physical([dummyCheck, envCheck.hasFasitEnvVariables, certCheck.checkCertificate, leaderCheck, redisCheck]));
+app.use('/healthcheck', physical([dummyCheck, envCheck.hasFasitEnvVariables, certCheck.checkCertificate, leaderCheck]));
