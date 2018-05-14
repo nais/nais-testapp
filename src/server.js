@@ -160,32 +160,14 @@ app.get("/die", () => {
 });
 
 app.get("/proxy", (req, res) => {
-    let endpoints = [
-        { host: 'http://naisd', path: '/', port: '80', method: 'GET' },
+    let urlWhitelist = [
+        "http://naisd/",
     ];
 
-    let options = endpoints[parseInt(req.query.endpoint)];
+    let url = urlWhitelist[parseInt(req.query.urlIndex)];
 
-    console.log("Proxying to: ", options);
-    let proxyReq = http.get(options, (proxyRes) => {
-        proxyRes.on('data', (chunk) => {
-            res.write(chunk);
-        });
-
-        proxyRes.on('close', () => {
-            res.writeHead(proxyRes.statusCode);
-            res.end()
-        });
-
-        proxyRes.on('end', () => {
-            res.writeHead(proxyRes.statusCode);
-            res.end()
-        });
-    }).on('error', (err) => {
-        console.log('Error: ', err);
-    });
-
-    proxyReq.end();
+    console.log("Proxying to: ", url);
+    req.pipe(request(url)).pipe(res);
 });
 
 server = app.listen(8080, () => {
