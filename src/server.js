@@ -9,6 +9,11 @@ const Redis = require('ioredis');
 const redis = (process.env.DISABLE_REDIS === "true") ? {"status": "disabled"} : newRedisConnection();
 
 
+const alertCounter = new prometheus.Counter({
+  name: 'alerts_triggered',
+  help: 'Used to trigger alerts manually.'
+});
+
 prometheus.collectDefaultMetrics();
 const app = new express();
 let server;
@@ -167,6 +172,11 @@ app.get("/testConnectivity", (req, res) => {
     req.pipe(request(testConnectivityUrl))
         .on('error', (e) => res.send(e))
         .pipe(res);
+});
+
+app.post('/triggerAlert', (req, res) => {
+    alertCounter.inc();
+    res.sendStatus(200);
 });
 
 server = app.listen(8080, () => {
