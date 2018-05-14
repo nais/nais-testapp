@@ -46,13 +46,13 @@ app.get("/headers", (req, res) => {
 function getLeaderName(onResult) {
     let electorUrl = process.env["ELECTOR_PATH"];
     if (electorUrl === undefined) {
-	onResult(404, "No URL in $ELECTOR_PATH, are you running with 'leaderElection: true'?");
+        onResult(404, "No URL in $ELECTOR_PATH, are you running with 'leaderElection: true'?");
         return;
     }
 
     let options = {
-	url: "localhost",
-	port: 4040
+        url: "localhost",
+        port: 4040
     }
     let req = http.request(options, function(res) {
         let output = '';
@@ -63,12 +63,12 @@ function getLeaderName(onResult) {
 
         res.on('end', function() {
             var result = JSON.parse(output);
-	    onResult(res.statusCode, result);
+            onResult(res.statusCode, result);
         });
     });
 
     req.on('error', function(err) {
-	console.log(err.message)
+        console.log(err.message)
     });
 
     req.end();
@@ -76,28 +76,28 @@ function getLeaderName(onResult) {
 
 app.get("/getLeader", (req, res) => {
     getLeaderName(function(statusCode, result) {
-	res.statusCode = statusCode;
-	res.send(result);
+        res.statusCode = statusCode;
+        res.send(result);
     });
 });
 
 app.get("/isleader", (req, res) => {
     let hostname = os.hostname();
     getLeaderName(function(statusCode, result) {
-	res.statusCode = statusCode;
-	if (statusCode != 200) {
-	    res.send(result);
-	} else {
-	    leaderName = result['name'];
-	    res.send(leaderName === hostname);
-	}
+        res.statusCode = statusCode;
+        if (statusCode != 200) {
+            res.send(result);
+        } else {
+            leaderName = result['name'];
+            res.send(leaderName === hostname);
+        }
     });
 });
 
 function newRedisConnection() {
     return new Redis({
-	sentinels: [{ host: 'rfs-nais-testapp', port: 26379 }],
-	name: 'mymaster'
+        sentinels: [{ host: 'rfs-nais-testapp', port: 26379 }],
+        name: 'mymaster'
     });
 }
 
@@ -107,49 +107,49 @@ function isRedisReady() {
 
 function parseRedisInfo(info) {
     function innerValues(info) {
-	let data = {};
-	let arr = info.split(",");
-	for (let i = 0; i < arr.length; i++) {
-	    let line = arr[i];
-	    let splited = line.split("=");
-	    let key = splited[0].trim();
-	    let value = splited[1].trim();
-	    data[key] = value;
-	}
-	return data;
+        let data = {};
+        let arr = info.split(",");
+        for (let i = 0; i < arr.length; i++) {
+            let line = arr[i];
+            let splited = line.split("=");
+            let key = splited[0].trim();
+            let value = splited[1].trim();
+            data[key] = value;
+        }
+        return data;
     }
 
     let data = {};
     let arr = info.split('\n');
     let type = "";
     for (let i = 0; i < arr.length; i++) {
-	let line = arr[i];
-	if (line.startsWith("#")) {
-	    type = line.split(" ")[1].trim().toLowerCase();
-	    data[type] = {};
-	} else if (line.includes(":")) {
-	    let splited = line.split(":");
-	    let key = splited[0].trim();
-	    let value = splited[1].trim();
-	    if (value.includes(",")) {
-		data[type][key] = innerValues(value);
-	    } else {
-		data[type][key] = value;
-	    }
-	}
+        let line = arr[i];
+        if (line.startsWith("#")) {
+            type = line.split(" ")[1].trim().toLowerCase();
+            data[type] = {};
+        } else if (line.includes(":")) {
+            let splited = line.split(":");
+            let key = splited[0].trim();
+            let value = splited[1].trim();
+            if (value.includes(",")) {
+                data[type][key] = innerValues(value);
+            } else {
+                data[type][key] = value;
+            }
+        }
     }
     return data;
 }
 
 app.get("/redisInfo", (req, res) => {
     if (isRedisReady()) {
-	redis.info(function(err, result) {
-	    res.statusCode = 200;
-	    res.send(parseRedisInfo(result));
-	});
+        redis.info(function(err, result) {
+            res.statusCode = 200;
+            res.send(parseRedisInfo(result));
+        });
     } else {
-	res.statusCode = 200;
-	res.send("Ikke kontakt med Redis cluster");
+        res.statusCode = 200;
+        res.send("Ikke kontakt med Redis cluster");
     }
 });
 
@@ -161,7 +161,7 @@ app.get("/die", () => {
 
 app.get("/proxy", (req, res) => {
     let endpoints = [
-      { host: 'http://naisd', path: '/', port: '80', method: 'GET' },
+        { host: 'http://naisd', path: '/', port: '80', method: 'GET' },
     ];
 
     let options = endpoints[parseInt(req.query.endpoint)];
@@ -204,47 +204,47 @@ const dummyCheck = (done) => {
 
 const leaderCheck = (done) => {
     getLeaderName(function (statusCode, result) {
-	if (statusCode == 200) {
-	    done(physical.response({
-		name: 'Leader election check',
-		actionable: false,
-		healthy: true,
-		message: result,
-		type: physical.type.SELF
-	    }));
-	} else {
-	    done(physical.response({
-		name: 'Leader election check',
-		actionable: false,
-		healthy: false,
-		message: result,
-		severity: physical.severity.CRITICAL,
-		type: physical.type.SELF
-	    }));
-	}
+        if (statusCode == 200) {
+            done(physical.response({
+                name: 'Leader election check',
+                actionable: false,
+                healthy: true,
+                message: result,
+                type: physical.type.SELF
+            }));
+        } else {
+            done(physical.response({
+                name: 'Leader election check',
+                actionable: false,
+                healthy: false,
+                message: result,
+                severity: physical.severity.CRITICAL,
+                type: physical.type.SELF
+            }));
+        }
     });
 };
 
 const redisCheck = (done) => {
     if (isRedisReady()) {
-	redis.info("replication", function(err, result) {
-	    done(physical.response({
-		name: 'Redis sentinel check',
-		actionable: false,
-		healthy: true,
-		message: parseRedisInfo(result),
-		type: physical.type.SELF
-	    }));
-	});
+        redis.info("replication", function(err, result) {
+            done(physical.response({
+                name: 'Redis sentinel check',
+                actionable: false,
+                healthy: true,
+                message: parseRedisInfo(result),
+                type: physical.type.SELF
+            }));
+        });
     } else {
-	done(physical.response({
-	    name: 'Redis sentinel check',
-	    actionable: false,
-	    healthy: false,
-	    message: "Ikke kontakt med Redis cluster",
+        done(physical.response({
+            name: 'Redis sentinel check',
+            actionable: false,
+            healthy: false,
+            message: "Ikke kontakt med Redis cluster",
             severity: physical.severity.WARNING,
-	    type: physical.type.SELF
-	}));
+            type: physical.type.SELF
+        }));
     }
 };
 
