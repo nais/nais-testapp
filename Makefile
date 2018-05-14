@@ -7,4 +7,4 @@ build:
 push:
 	docker push navikt/nais-testapp:$(VERSION)
 run-local:
-	docker run --rm -ti -p 8080:8080 navikt/nais-testapp:$(VERSION)
+	docker run --rm -ti -p 8080:8080 -e TEST_CONNECTIVITY_URL=http://vg.no navikt/nais-testapp:$(VERSION)

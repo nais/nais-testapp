@@ -159,15 +159,11 @@ app.get("/die", () => {
     })
 });
 
-app.get("/proxy", (req, res) => {
-    let urlWhitelist = [
-        "http://naisd/",
-    ];
+app.get("/testConnectivity", (req, res) => {
+    let testConnectivityUrl = process.env.TEST_CONNECTIVITY_URL
 
-    let url = urlWhitelist[parseInt(req.query.urlIndex)];
-
-    console.log("Proxying to: ", url);
-    req.pipe(request(url))
+    console.log("Testing connectivity to: ", testConnectivityUrl);
+    req.pipe(request(testConnectivityUrl))
         .on('error', (e) => res.send(e))
         .pipe(res);
 });
