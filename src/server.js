@@ -6,7 +6,8 @@ const prometheus = require('prom-client');
 const physical = require('express-physical');
 const request = require('request');
 const Redis = require('ioredis');
-const redis = newRedisConnection();
+const redis = (process.env.DISABLE_REDIS === "true") ? {"status": "disabled"} : newRedisConnection();
+
 
 prometheus.collectDefaultMetrics();
 const app = new express();
