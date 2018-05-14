@@ -167,7 +167,9 @@ app.get("/proxy", (req, res) => {
     let url = urlWhitelist[parseInt(req.query.urlIndex)];
 
     console.log("Proxying to: ", url);
-    req.pipe(request(url)).pipe(res);
+    req.pipe(request(url))
+        .on('error', (e) => res.send(e))
+        .pipe(res);
 });
 
 server = app.listen(8080, () => {
