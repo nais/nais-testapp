@@ -4,7 +4,7 @@ const ip = require('ip');
 const os = require('os');
 const prometheus = require('prom-client');
 const physical = require('express-physical');
-const request = require('request');
+const request = require('request').defaults({ rejectUnauthorized: false});
 
 const alertCounter = new prometheus.Counter({
   name: 'alerts_triggered',
