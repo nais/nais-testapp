@@ -44,14 +44,6 @@ alerts:
   annotations:
     description: Pod {{$labels.kubernetes_namespace}}/{{$labels.kubernetes_pod_name}} will run out of file/socket descriptors in 4 hours
     action: Investigate why app is keeping files / sockets open
-- alert: failure-response-high
-  expr: (sum(rate(traefik_requests_total{code=~"[45]..", service=~"nais-testapp.*"}[5m])) by (code)) / scalar(sum(rate(traefik_requests_total{service=~"nais-testapp.*"}[5m]))) > 0.10
-  for: 5m
-  labels:
-    severity: warning
-  annotations:
-    description: Nais-testapp is experiencing a lot of failed {{$labels.method}} requests.
-    action: kubectl logs -f nais-testapp-{id} to investigate why app is responding with failures.
 - alert: alert-triggered
   expr: increase(alerts_triggered{app="nais-testapp"}[3m]) > 0
   for: 1m
