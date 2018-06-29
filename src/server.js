@@ -7,7 +7,6 @@ const physical = require('express-physical');
 const request = require('request');
 const Redis = require('ioredis');
 const redis = (process.env.DISABLE_REDIS === "true") ? {"status": "disabled"} : newRedisConnection();
-const redisHost = process.env.REDIS_HOST || 'rfs-nais-testapp';
 
 const alertCounter = new prometheus.Counter({
   name: 'alerts_triggered',
@@ -101,6 +100,7 @@ app.get("/isleader", (req, res) => {
 });
 
 function newRedisConnection() {
+    let redisHost = process.env.REDIS_HOST || 'rfs-nais-testapp';
     return new Redis({
         sentinels: [{ host: redisHost, port: 26379 }],
 
