@@ -4,7 +4,9 @@
   "private": true,
   "description": "nais test application",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "johnny.horvi@nav.no",
   "license": "MIT",
@@ -15,6 +17,8 @@
     "ip": "^1.1.5",
     "npm": "^6.0.0",
     "prom-client": "^10.2.3",
-    "request": "^2.85.0"
-  }
+    "request": "^2.85.0",
+    "snyk": "^1.88.0"
+  },
+  "snyk": true
 }
