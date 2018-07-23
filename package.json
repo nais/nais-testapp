@@ -1,6 +1,6 @@
 {
   "name": "nais-testapp",
-  "version": "56.0.0",
+  "version": "59.0.0",
   "private": true,
   "description": "nais test application",
   "scripts": {
@@ -18,7 +18,7 @@
     "npm": "^6.0.0",
     "prom-client": "^10.2.3",
     "request": "^2.85.0",
-    "snyk": "^1.83.0"
+    "snyk": "^1.88.0"
   },
   "snyk": true
 }

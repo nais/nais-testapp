@@ -8,7 +8,6 @@ const request = require('request');
 const Redis = require('ioredis');
 const redis = (process.env.DISABLE_REDIS === "true") ? {"status": "disabled"} : newRedisConnection();
 
-
 const alertCounter = new prometheus.Counter({
   name: 'alerts_triggered',
   help: 'Used to trigger alerts manually.'
@@ -101,8 +100,10 @@ app.get("/isleader", (req, res) => {
 });
 
 function newRedisConnection() {
+    let redisHost = process.env.REDIS_HOST || 'rfs-nais-testapp';
     return new Redis({
-        sentinels: [{ host: 'rfs-nais-testapp', port: 26379 }],
+        sentinels: [{ host: redisHost, port: 26379 }],
+
         name: 'mymaster'
     });
 }
