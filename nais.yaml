@@ -19,6 +19,7 @@ fasitResources:
 leaderElection: true
 redis: true
 logformat: glog
+secrets: true
 alerts:
 - alert: up
   expr: sum(up{app="nais-testapp"}) < 2
