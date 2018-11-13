@@ -10,7 +10,8 @@ const redis = (process.env.DISABLE_REDIS === "true") ? {"status": "disabled"} : 
 
 const alertCounter = new prometheus.Counter({
   name: 'alerts_triggered',
-  help: 'Used to trigger alerts manually.'
+  help: 'Used to trigger alerts manually.',
+  labelNames: ['longtermstorage']
 });
 
 prometheus.collectDefaultMetrics();
@@ -176,7 +177,7 @@ app.get("/testConnectivity", (req, res) => {
 });
 
 app.post('/triggerAlert', (req, res) => {
-    alertCounter.inc();
+    alertCounter.inc({longtermstorage: "true"});
     res.sendStatus(200);
 });
 
