@@ -1,3 +1,16 @@
+const winston = require('winston')
+const logger = winston.createLogger({
+    level: 'info',
+    format: winston.format.json(),
+    transports: [
+        new winston.transports.Console({
+          handleExceptions: true
+        })
+      ],
+  });
+
+
+console.log=logger.info
 const express = require('express');
 const http = require("http");
 const ip = require('ip');
@@ -74,7 +87,7 @@ function getLeaderName(onResult) {
     });
 
     req.on('error', function(err) {
-        console.log(err.message)
+        logger.info(err.message)
     });
 
     req.end();
@@ -163,14 +176,14 @@ app.get("/redisInfo", (req, res) => {
 
 app.get("/die", () => {
     server.close( () => {
-        console.log('I am dying')
+        logger.info('I am dying')
     })
 });
 
 app.get("/testConnectivity", (req, res) => {
     let testConnectivityUrl = process.env.TEST_CONNECTIVITY_URL
 
-    console.log("Testing connectivity to: ", testConnectivityUrl);
+    logger.info("Testing connectivity to: ", testConnectivityUrl);
     req.pipe(request(testConnectivityUrl))
         .on('error', (e) => res.send(e))
         .pipe(res);
@@ -182,7 +195,7 @@ app.post('/triggerAlert', (req, res) => {
 });
 
 server = app.listen(8080, () => {
-    console.log('running on port 8080')
+    logger.info('running on port 8080')
 });
 
 
