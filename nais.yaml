@@ -39,7 +39,7 @@ alerts:
     description: The deployment generation observed in the cluster is not the same as specified in the deploy manifest.
     action: Check the deployment, replicaset, and pods for errors.
 - alert: predicted-fd-exhaust
-  expr: predict_linear(fd_utilization[1h], 3600 * 4) > 1
+  expr: predict_linear(fd_utilization{app="nais-testapp"}[1h], 3600 * 4) > 1
   for: 10m
   labels:
     severity: warning
