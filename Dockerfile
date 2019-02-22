@@ -1,4 +1,4 @@
-FROM mhart/alpine-node:base-9
+FROM navikt/node-express:test
 MAINTAINER Johnny Horvi <johnny.horvi@nav.no> 
 
 RUN apk add --no-cache curl
