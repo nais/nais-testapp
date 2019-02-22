@@ -14,7 +14,7 @@ const checkEnvVariables = (data) => (done) => {
             healthy: false,
             actionable: false,
             severity: physical.severity.CRITICAL,
-            message: "One or more of these required fasit resources not found: " + requiredEnvVars,
+            message: "One or more of these required Vault resources not found: " + requiredEnvVars,
             info: {
                 info: "todo: Can write something useful here."
             }
@@ -22,8 +22,8 @@ const checkEnvVariables = (data) => (done) => {
     }
 };
 
-exports.hasFasitEnvVariables = checkEnvVariables({
-    name: "FASIT resources are injected as ENV variables.",
+exports.hasVaultEnvVariables = checkEnvVariables({
+    name: "Vault resources are injected as ENV variables.",
     type: physical.type.EXTERNAL_DEPENDENCY,
-    dependentOn: "FASIT"
+    dependentOn: "VAULT"
 });

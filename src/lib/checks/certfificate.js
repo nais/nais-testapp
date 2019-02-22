@@ -1,7 +1,7 @@
 const physical = require('express-physical');
 const requiredCertifcates = ["testcertificate_keystore", "testcertificate2_keystore"];
 const fs = require('fs');
-const mountPath = "/var/run/secrets/naisd.io/";
+    const mountPath = "/var/run/secrets/nais.io/vault/";
 
 const checkCertifcates = (data) => (done) => {
     if (requiredCertifcates.every((f) => {
@@ -16,7 +16,7 @@ const checkCertifcates = (data) => (done) => {
             healthy: false,
             actionable: false,
             severity: physical.severity.CRITICAL,
-            message: "Required fasit resources not found in path " + mountPath + ": " + requiredCertifcates,
+            message: "Required Vault resources not found in path " + mountPath + ": " + requiredCertifcates,
             info: {
                 info: "todo: Can write something useful here."
             }
@@ -25,7 +25,7 @@ const checkCertifcates = (data) => (done) => {
 };
 
 exports.checkCertificate = checkCertifcates({
-    name: "FASIT certificates are injected as file secrets.",
+    name: "Vault certificates are injected as file secrets.",
     type: physical.type.EXTERNAL_DEPENDENCY,
-    dependentOn: "FASIT"
+    dependentOn: "VAULT"
 });
