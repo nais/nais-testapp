@@ -1,5 +1,5 @@
 FROM navikt/node-express:test
-MAINTAINER Johnny Horvi <johnny.horvi@nav.no> 
+LABEL maintainer="https://nais.io"
 
 RUN apk add --no-cache curl
 
