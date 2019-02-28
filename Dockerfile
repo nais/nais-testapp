@@ -1,4 +1,4 @@
-FROM navikt/node-express:test
+FROM navikt/node-express:9-common
 LABEL maintainer="https://nais.io"
 
 RUN apk add --no-cache curl
