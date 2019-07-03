@@ -19,7 +19,7 @@
     "pino": "^5.10.1",
     "prom-client": "^10.2.3",
     "request": "^2.88.0",
-    "snyk": "^1.124.1",
+    "snyk": "^1.189.0",
     "winston": "^3.1.0"
   },
   "snyk": true
