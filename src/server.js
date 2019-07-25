@@ -114,12 +114,8 @@ app.get("/isleader", (req, res) => {
 });
 
 function newRedisConnection() {
-    let redisHost = process.env.REDIS_HOST || 'rfs-nais-testapp';
-    return new Redis({
-        sentinels: [{ host: redisHost, port: 26379 }],
-
-        name: 'mymaster'
-    });
+    let redisHost = process.env.REDIS_HOST || 'nais-testapp-redis';
+    return new Redis(6379, redisHost);
 }
 
 function isRedisReady() {
