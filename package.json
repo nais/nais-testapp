@@ -15,7 +15,7 @@
     "express-physical": "^0.5.2",
     "ioredis": "^3.2.2",
     "ip": "^1.1.5",
-    "npm": "^6.4.0",
+    "npm": "^6.6.0",
     "pino": "^5.10.1",
     "prom-client": "^10.2.3",
     "request": "^2.88.0",
