@@ -18,8 +18,6 @@ const os = require('os');
 const prometheus = require('prom-client');
 const physical = require('express-physical');
 const request = require('request');
-const Redis = require('ioredis');
-const redis = (process.env.DISABLE_REDIS === "true") ? {"status": "disabled"} : newRedisConnection();
 
 const alertCounter = new prometheus.Counter({
   name: 'alerts_triggered',
@@ -111,67 +109,6 @@ app.get("/isleader", (req, res) => {
             res.send(leaderName === hostname);
         }
     });
-});
-
-function newRedisConnection() {
-    let redisHost = process.env.REDIS_HOST || 'rfs-nais-testapp';
-    return new Redis({
-        sentinels: [{ host: redisHost, port: 26379 }],
-
-        name: 'mymaster'
-    });
-}
-
-function isRedisReady() {
-    return redis.status === "ready";
-}
-
-function parseRedisInfo(info) {
-    function innerValues(info) {
-        let data = {};
-        let arr = info.split(",");
-        for (let i = 0; i < arr.length; i++) {
-            let line = arr[i];
-            let splited = line.split("=");
-            let key = splited[0].trim();
-            let value = splited[1].trim();
-            data[key] = value;
-        }
-        return data;
-    }
-
-    let data = {};
-    let arr = info.split('\n');
-    let type = "";
-    for (let i = 0; i < arr.length; i++) {
-        let line = arr[i];
-        if (line.startsWith("#")) {
-            type = line.split(" ")[1].trim().toLowerCase();
-            data[type] = {};
-        } else if (line.includes(":")) {
-            let splited = line.split(":");
-            let key = splited[0].trim();
-            let value = splited[1].trim();
-            if (value.includes(",")) {
-                data[type][key] = innerValues(value);
-            } else {
-                data[type][key] = value;
-            }
-        }
-    }
-    return data;
-}
-
-app.get("/redisInfo", (req, res) => {
-    if (isRedisReady()) {
-        redis.info(function(err, result) {
-            res.statusCode = 200;
-            res.send(parseRedisInfo(result));
-        });
-    } else {
-        res.statusCode = 200;
-        res.send("Ikke kontakt med Redis cluster");
-    }
 });
 
 app.get("/die", () => {
