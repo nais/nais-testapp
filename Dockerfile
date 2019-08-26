@@ -1,5 +1,4 @@
-FROM mhart/alpine-node:base-9
-MAINTAINER Johnny Horvi <johnny.horvi@nav.no> 
+FROM mhart/alpine-node:10
 
 RUN apk add --no-cache curl
 
